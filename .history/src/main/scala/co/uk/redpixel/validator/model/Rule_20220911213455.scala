@@ -1,0 +1,2 @@
+
+final case class Rule()
