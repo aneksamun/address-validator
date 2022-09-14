@@ -1,5 +1,0 @@
-import 
-
-class InMemoryRulesStorage {
-  
-}
