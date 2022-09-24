@@ -1,5 +1,7 @@
 package co.uk.redpixel.address.validation
 
-import scala.util.Using.apply
+import cats.effect._
 
-object Main
+object Main extends IOApp:
+
+  override def run(args: List[String]): IO[ExitCode] = ???

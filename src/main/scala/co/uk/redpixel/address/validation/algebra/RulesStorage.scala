@@ -7,7 +7,7 @@ trait RulesStorage[F[_]]:
   def get(country: Country): F[Vector[FieldRule]]
 
 object RulesStorage:
-  opaque type Country = String
+  opaque type Country <: String = String
 
   object Country:
     def apply(value: String): Country = value

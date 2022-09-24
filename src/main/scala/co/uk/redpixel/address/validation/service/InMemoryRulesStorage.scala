@@ -8,4 +8,3 @@ class InMemoryRulesStorage[F[_]] extends RulesStorage[F]:
   def get(country: Country): F[Vector[FieldRule]] = ???
 
 object InMemoryRulesStorage
-  
