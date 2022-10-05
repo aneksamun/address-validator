@@ -14,7 +14,6 @@ lazy val root = (project in file("."))
       "io.circe" %% "circe-parser" % "0.14.3",
       "io.circe" %% "circe-generic" % "0.14.3",
       "io.monix" %% "newtypes-core" % "0.2.3",
-      "io.monix" %% "newtypes-circe-v0-14" % "0.2.3",
       "org.typelevel" %% "cats-core" % "2.8.0",
       "org.typelevel" %% "cats-effect" % "3.3.14",
       "com.disneystreaming.smithy4s" %% "smithy4s-http4s" % smithy4sVersion.value,

@@ -13,5 +13,4 @@ object Main extends IOApp.Simple {
       .withHost(host"localhost")
       .build
       .useForever
-
 }

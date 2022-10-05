@@ -2,7 +2,7 @@ package co.uk.redpixel.address.validation.data
 
 import scala.util.matching.Regex
 
-final case class Rule(maxLength: PosInt,
+final case class Rule(maxLength: MaxLength,
                       required: Boolean = false,
                       pattern: Option[Regex] = None)
 
