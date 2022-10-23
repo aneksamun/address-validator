@@ -1,14 +1,14 @@
 $version: "2.0"
 
-namespace co.uk.redpixel.address.validation.api
+namespace co.uk.redpixel.validator.api
 
 use smithy4s.api#simpleRestJson
-use co.uk.redpixel.address.validation.api#Address
-use co.uk.redpixel.address.validation.api#Addressee
-use co.uk.redpixel.address.validation.api#Country
+use co.uk.redpixel.validator.api#Address
+use co.uk.redpixel.validator.api#Addressee
+use co.uk.redpixel.validator.api#Country
 
 @simpleRestJson
-service AddressValidationService {
+service AddressValidator {
   version: "1.0.0",
   operations: [Validate]
 }

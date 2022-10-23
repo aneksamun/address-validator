@@ -1,6 +1,6 @@
 $version: "2.0"
 
-namespace co.uk.redpixel.address.validation.api
+namespace co.uk.redpixel.validator.api
 
 @documentation("The addressee first name")
 string FirstName

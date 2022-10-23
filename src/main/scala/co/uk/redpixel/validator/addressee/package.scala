@@ -1,13 +1,12 @@
-package co.uk.redpixel.address.validation.data
+package co.uk.redpixel.validator
 
-import monix.newtypes.NewtypeWrapped
+import monix.newtypes._
 
-object Addressee {
+package object addressee {
 
   type FirstName = FirstName.Type
   object FirstName extends NewtypeWrapped[String]
 
   type LastName = LastName.Type
   object LastName extends NewtypeWrapped[String]
-
 }

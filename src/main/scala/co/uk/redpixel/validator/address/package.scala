@@ -1,8 +1,8 @@
-package co.uk.redpixel.address.validation.data
+package co.uk.redpixel.validator
 
 import monix.newtypes._
 
-object Address {
+package object address {
 
   type AddressLine1 = AddressLine1.Type
   object AddressLine1 extends NewtypeWrapped[String]
@@ -27,5 +27,4 @@ object Address {
 
   type CountryCode = CountryCode.Type
   object CountryCode extends NewtypeWrapped[String]
-
 }
