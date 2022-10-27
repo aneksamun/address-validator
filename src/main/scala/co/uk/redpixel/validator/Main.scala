@@ -1,60 +1,56 @@
 package co.uk.redpixel.validator
 
 import cats.effect._
-//import co.uk.redpixel.validator.rules.ValidationRules.FieldRules
+import co.uk.redpixel.validator.data.FieldRules
 import fs2.io.file.{Files, Path}
-import io.circe.fs2.stringArrayParser//{decoder, stringArrayParser}
-//import io.circe.generic.codec.DerivedAsObjectCodec.deriveCodec
-
+import io.circe.fs2.{decoder, stringArrayParser}
 import fs2.text
 
-//import com.comcast.ip4s._
-//import org.http4s.ember.server._
+// import com.comcast.ip4s._
+// import org.http4s.ember.server._
 
 object Main extends IOApp.Simple {
 
   def run: IO[Unit] = {
 
-    Files[IO].walk(Path(getClass.getResource("/templates").getPath))
-      .tail
-      .map(
-        Files[IO]
-          .readAll(_)
-          .through(text.utf8.decode)
-          .through(text.lines)
-          .through(stringArrayParser)
-//          .through(decoder[IO, FieldRules])
+    def through(directory: String) =
+      Path(getClass.getResource(s"/$directory").getPath)
+
+    def getName(path: Path) =
+      fs2.Stream
+        .emit(path.baseName)
+        .covary[IO]
+
+    def parse(file: Path) =
+      Files[IO]
+        .readAll(file)
+        .through(text.utf8.decode)
+        .through(text.lines)
+        .through(stringArrayParser)
+        .through(decoder[IO, FieldRules])
+
+    Files[IO].walk(
+        through(directory = "templates")
       )
-      .parJoinUnbounded
-      .evalTap { x =>
-        IO.delay(println(x.toString()))
+      .tail
+      .map { file =>
+        getName(file) zip parse(file)
       }
+      .parJoinUnbounded
       .compile
-      .drain
-
-    //    new File(getClass.getResource("/templates").getPath)
-    //
-    //    Resource
-    //      .fromAutoCloseable(IO.delay(Source.fromURL()))
-    //      .use { source =>
-    //        IO.delay(println(source.getLines()))
-    //      }
-
-    //    val a = Files[IO].readAll(fs2.io.file.Path("templates"))
-    //      .through(text.utf8.decode)
-    //      .through(text.lines)
-    //      .compile.string
-
-    //    Using.resource(getClass.getResourceAsStream("templates")) { x =>
-    //      Files.
-    //    }
-
+      .to(Map) >> IO.unit
   }
 
-  //    EmberServerBuilder
-  //      .default[IO]
-  //      .withPort(port"9000")
-  //      .withHost(host"localhost")
-  //      .build
-  //      .useForever
+  implicit class PathOps(private val underlying: Path) extends AnyVal {
+    def baseName: String =
+      underlying.fileName.toString
+        .replace(underlying.extName, "")
+  }
+
+  //  EmberServerBuilder
+  //    .default[IO]
+  //    .withPort(port"9000")
+  //    .withHost(host"localhost")
+  //    .build
+  //    .useForever
 }

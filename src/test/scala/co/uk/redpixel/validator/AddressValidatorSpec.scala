@@ -1,6 +1,6 @@
 package co.uk.redpixel.validator
 
-import co.uk.redpixel.validator.rules.ValidationRules._
+import co.uk.redpixel.validator.data.FieldRules
 import io.circe.parser._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

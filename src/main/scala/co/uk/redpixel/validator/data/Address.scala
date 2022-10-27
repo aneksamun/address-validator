@@ -1,8 +1,20 @@
-package co.uk.redpixel.validator
+package co.uk.redpixel.validator.data
 
+import co.uk.redpixel.validator.data.Address._
 import monix.newtypes._
 
-package object address {
+final case class Address(
+  line1: Option[AddressLine1],
+  line2: Option[AddressLine2],
+  line3: Option[AddressLine3],
+  postcode: Option[Postcode],
+  town: Option[Town],
+  county: Option[County],
+  country: Option[Country],
+  countryCode: Option[CountryCode]
+)
+
+object Address {
 
   type AddressLine1 = AddressLine1.Type
   object AddressLine1 extends NewtypeWrapped[String]
@@ -27,4 +39,5 @@ package object address {
 
   type CountryCode = CountryCode.Type
   object CountryCode extends NewtypeWrapped[String]
+
 }
