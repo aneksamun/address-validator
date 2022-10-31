@@ -21,6 +21,7 @@ lazy val root = (project in file("."))
       "com.disneystreaming.smithy4s" %% "smithy4s-http4s" % smithy4sVersion.value,
       "com.disneystreaming.smithy4s" %% "smithy4s-http4s-swagger" % smithy4sVersion.value,
       "org.http4s" %% "http4s-ember-server" % "0.23.16",
+      "io.github.classgraph" % "classgraph" % "4.8.149",
       "org.scalatest" %% "scalatest" % "3.2.12" % Test
     )
   )
