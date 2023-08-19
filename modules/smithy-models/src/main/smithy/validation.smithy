@@ -1,6 +1,6 @@
 $version: "2.0"
 
-namespace co.uk.redpixel.validator.api
+namespace co.uk.redpixel.addressvalidator.api
 
 use smithy4s.api#simpleRestJson
 use co.uk.redpixel.validator.api#Address
@@ -9,14 +9,14 @@ use co.uk.redpixel.validator.api#Country
 
 @simpleRestJson
 service AddressValidator {
-  version: "1.0.0",
+  version: "1.0.0"
   operations: [Validate]
 }
 
 @http(method: "POST", uri: "/address/{country}/validate", code: 200)
 @idempotent
 @documentation(
-  "Validates address for given country"
+  "Validates an address for given country"
 )
 operation Validate {
   input: AddressValidationRequest
@@ -26,7 +26,7 @@ operation Validate {
 structure AddressValidationRequest {
   @httpLabel
   @required
-  country: Country,
+  country: Country
 
   @required
   addressee: Addressee
