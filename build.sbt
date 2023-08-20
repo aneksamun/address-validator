@@ -1,6 +1,7 @@
-import smithy4s.codegen.Smithy4sCodegenPlugin
-import Dependencies.*
 import sbt.Keys.libraryDependencies
+import smithy4s.codegen.Smithy4sCodegenPlugin
+
+import Dependencies.*
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
@@ -20,7 +21,9 @@ lazy val service = project
   .dependsOn(`smithy-models`, `domain`)
   .settings(
     name := "address-validation-service",
-    libraryDependencies ++= smithy4sHttp4sServer(smithy4sVersion.value)
+    libraryDependencies ++= smithy4sHttp4sServer(
+      smithy4sVersion.value
+    ) ++ http4sEmberServer ++ cats ++ catsEffect
   )
 
 lazy val `smithy-models` = project
@@ -37,8 +40,3 @@ lazy val domain = project
     testFrameworks += new TestFramework("weaver.framework.CatsEffect"),
     libraryDependencies ++= circe ++ cats ++ catsEffect ++ fs2 ++ classGraph ++ monixNewTypes
   )
-
-//    libraryDependencies ++= Seq(
-//      "org.http4s"                   %% "http4s-ember-server"     % "0.23.18",
-//    )
-//  )

@@ -2,10 +2,6 @@ import sbt.*
 
 object Dependencies {
 
-  lazy val shapeless = Seq(
-    "com.chuusai" %% "shapeless" % Versions.shapeless
-  )
-
   lazy val circe = Seq(
     "io.circe" %% "circe-core"    % Versions.circe,
     "io.circe" %% "circe-parser"  % Versions.circe,
@@ -44,4 +40,8 @@ object Dependencies {
       "com.disneystreaming.smithy4s" %% "smithy4s-http4s"         % smithy4sVersion,
       "com.disneystreaming.smithy4s" %% "smithy4s-http4s-swagger" % smithy4sVersion
     )
+
+  lazy val http4sEmberServer = Seq(
+    "org.http4s" %% "http4s-ember-server" % Versions.http4s
+  )
 }

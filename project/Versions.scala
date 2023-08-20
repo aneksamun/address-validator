@@ -6,4 +6,5 @@ object Versions {
   val catsEffects   = "3.5.1"
   val classGraph    = "4.8.162"
   val monixNewTypes = "0.2.3"
+  val http4s        = "0.23.18"
 }

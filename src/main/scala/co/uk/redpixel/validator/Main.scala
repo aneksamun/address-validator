@@ -3,22 +3,14 @@ package co.uk.redpixel.validator
 //import cats.effect._
 //import co.uk.redpixel.validator.data.Address._
 //import co.uk.redpixel.validator.data.{Address, FieldRules}
-//import fs2.text
-//import io.circe.fs2.{decoder, stringArrayParser}
-//import io.github.classgraph.{ClassGraph, Resource => ClassgraphResource}
 //import shapeless.labelled.FieldType
 //
 //import scala.jdk.CollectionConverters._
-
-// import com.comcast.ip4s._
-// import org.http4s.ember.server._
 
 @main def main(): Unit =
   println("Hello world!")
 
 //object Main extends IOApp.Simple {
-//
-//
 //
 //  def run: IO[Unit] =
 //    IO
@@ -38,13 +30,6 @@ package co.uk.redpixel.validator
 //      )
 //    )
 //  } yield println(validated)
-
-  //  EmberServerBuilder
-  //    .default[IO]
-  //    .withPort(port"9000")
-  //    .withHost(host"localhost")
-  //    .build
-  //    .useForever
 
 //class AddressValidator() {
 //
