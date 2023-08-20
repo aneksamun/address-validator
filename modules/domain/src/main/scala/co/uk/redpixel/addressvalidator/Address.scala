@@ -1,5 +1,7 @@
 package co.uk.redpixel.addressvalidator
 
+import cats.derived.*
+import cats.Eq
 import co.uk.redpixel.addressvalidator.Address.*
 
 case class Address(
@@ -11,7 +13,7 @@ case class Address(
     county: Option[County],
     country: Option[Country],
     countryCode: Option[CountryCode]
-)
+) derives Eq
 
 object Address:
   type Line1       = String

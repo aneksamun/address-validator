@@ -7,4 +7,6 @@ object Versions {
   val classGraph    = "4.8.162"
   val monixNewTypes = "0.2.3"
   val http4s        = "0.23.18"
+  val weaver        = "0.8.3"
+  val kittens       = "3.0.0"
 }

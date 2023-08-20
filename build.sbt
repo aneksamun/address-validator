@@ -23,7 +23,8 @@ lazy val service = project
     name := "address-validation-service",
     libraryDependencies ++= smithy4sHttp4sServer(
       smithy4sVersion.value
-    ) ++ http4sEmberServer ++ cats ++ catsEffect
+    ) ++ http4sEmberServer ++ cats ++ catsEffect,
+    testFrameworks += new TestFramework("weaver.framework.CatsEffect")
   )
 
 lazy val `smithy-models` = project
@@ -38,5 +39,15 @@ lazy val domain = project
   .settings(
     name := "address-validation-domain",
     testFrameworks += new TestFramework("weaver.framework.CatsEffect"),
-    libraryDependencies ++= circe ++ cats ++ catsEffect ++ fs2 ++ classGraph ++ monixNewTypes
+    libraryDependencies ++=
+      circe ++ cats ++ catsEffect ++ fs2 ++ kittens ++ classGraph ++ monixNewTypes ++ weaverTest
   )
+
+lazy val root =
+  project
+    .in(file("."))
+    .aggregate(
+      domain,
+      `smithy-models`,
+      service
+    )

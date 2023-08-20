@@ -22,6 +22,10 @@ object Dependencies {
     "co.fs2" %% "fs2-io"   % Versions.fs2
   )
 
+  lazy val kittens = Seq(
+    "org.typelevel" %% "kittens" % Versions.kittens
+  )
+
   lazy val classGraph = Seq(
     "io.github.classgraph" % "classgraph" % Versions.classGraph
   )
@@ -43,5 +47,10 @@ object Dependencies {
 
   lazy val http4sEmberServer = Seq(
     "org.http4s" %% "http4s-ember-server" % Versions.http4s
+  )
+
+  lazy val weaverTest = Seq(
+    "com.disneystreaming" %% "weaver-cats"       % Versions.weaver % Test,
+    "com.disneystreaming" %% "weaver-scalacheck" % Versions.weaver % Test
   )
 }
