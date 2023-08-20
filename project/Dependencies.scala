@@ -2,10 +2,15 @@ import sbt.*
 
 object Dependencies {
 
+  lazy val shapeless = Seq(
+    "com.chuusai" %% "shapeless" % Versions.shapeless
+  )
+
   lazy val circe = Seq(
     "io.circe" %% "circe-core"    % Versions.circe,
     "io.circe" %% "circe-parser"  % Versions.circe,
-    "io.circe" %% "circe-generic" % Versions.circe
+    "io.circe" %% "circe-generic" % Versions.circe,
+    "io.circe" %% "circe-fs2"     % Versions.circeFs2
   )
 
   lazy val cats = Seq(
@@ -15,4 +20,28 @@ object Dependencies {
   lazy val catsEffect = Seq(
     "org.typelevel" %% "cats-effect" % Versions.catsEffects
   )
+
+  lazy val fs2 = Seq(
+    "co.fs2" %% "fs2-core" % Versions.fs2,
+    "co.fs2" %% "fs2-io"   % Versions.fs2
+  )
+
+  lazy val classGraph = Seq(
+    "io.github.classgraph" % "classgraph" % Versions.classGraph
+  )
+
+  lazy val monixNewTypes = Seq(
+    "io.monix" %% "newtypes-core"        % Versions.monixNewTypes,
+    "io.monix" %% "newtypes-circe-v0-14" % Versions.monixNewTypes
+  )
+
+  def smithy4sCore(smithy4sVersion: String) = Seq(
+    "com.disneystreaming.smithy4s" %% "smithy4s-core" % smithy4sVersion
+  )
+
+  def smithy4sHttp4sServer(smithy4sVersion: String) =
+    smithy4sCore(smithy4sVersion) ++ Seq(
+      "com.disneystreaming.smithy4s" %% "smithy4s-http4s"         % smithy4sVersion,
+      "com.disneystreaming.smithy4s" %% "smithy4s-http4s-swagger" % smithy4sVersion
+    )
 }
