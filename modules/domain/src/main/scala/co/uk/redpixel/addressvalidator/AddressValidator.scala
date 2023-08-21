@@ -33,3 +33,4 @@ object AddressValidator:
           addressee: Addressee
       ): ValidationResult =
         ???
+
