@@ -8,6 +8,10 @@ import co.uk.redpixel.addressvalidator.Address.CountryCode
 //import cats.syntax.validated.*
 import co.uk.redpixel.addressvalidator.AddressValidator.*
 
+import scala.compiletime.constValueTuple
+import scala.deriving.Mirror
+import scala.deriving.Mirror.ProductOf
+
 trait AddressValidator:
 
   def validate(
@@ -20,10 +24,10 @@ object AddressValidator:
 
   type ValidationResult = ValidatedNec[ValidationError, Unit]
 
-  inline def labelsOf[A](using m: Mirror.Of[A]): m.MirroredElemLabels =
+  inline def fieldLabelsOf[A](using m: Mirror.Of[A]): m.MirroredElemLabels =
     constValueTuple[m.MirroredElemLabels]
 
-  inline def valuesOf[A <: Product](a: A)(using
+  inline def fieldValuesOf[A <: Product](a: A)(using
       m: Mirror.ProductOf[A]
   ): ProductOf[A]#MirroredElemTypes =
     Tuple.fromProductTyped(a)
