@@ -26,6 +26,11 @@ object Dependencies {
     "org.typelevel" %% "kittens" % Versions.kittens
   )
 
+  lazy val pureConfig = Seq(
+    "com.github.pureconfig" %% "pureconfig-core" % Versions.pureConfig
+
+  )
+
   lazy val classGraph = Seq(
     "io.github.classgraph" % "classgraph" % Versions.classGraph
   )

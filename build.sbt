@@ -23,7 +23,7 @@ lazy val service = project
     name := "address-validation-service",
     libraryDependencies ++= smithy4sHttp4sServer(
       smithy4sVersion.value
-    ) ++ http4sEmberServer ++ cats ++ catsEffect,
+    ) ++ http4sEmberServer ++ cats ++ catsEffect ++ pureConfig,
     testFrameworks += new TestFramework("weaver.framework.CatsEffect")
   )
 

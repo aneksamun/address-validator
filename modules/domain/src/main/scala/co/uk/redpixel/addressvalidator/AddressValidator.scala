@@ -3,7 +3,6 @@ package co.uk.redpixel.addressvalidator
 import cats.data.ValidatedNec
 import cats.effect.Async
 import cats.syntax.all.*
-//import cats.MonadError
 import co.uk.redpixel.addressvalidator.Address.CountryCode
 //import cats.syntax.validated.*
 import co.uk.redpixel.addressvalidator.AddressValidator.*
@@ -18,19 +17,26 @@ trait AddressValidator:
       country: CountryCode,
       address: Address,
       addressee: Addressee
-  ): Either[UnsupportedCountryError, ValidationResult]
+  ): Either[
+    UnsupportedCountryError,
+    ValidationResult
+  ]
 
 object AddressValidator:
 
   type ValidationResult = ValidatedNec[ValidationError, Unit]
 
-  inline def fieldLabelsOf[A](using m: Mirror.Of[A]): m.MirroredElemLabels =
-    constValueTuple[m.MirroredElemLabels]
+  case class ValidationError(field: String, message: String)
 
-  inline def fieldValuesOf[A <: Product](a: A)(using
-      m: Mirror.ProductOf[A]
-  ): ProductOf[A]#MirroredElemTypes =
-    Tuple.fromProductTyped(a)
+  case class UnsupportedCountryError(countryCode: CountryCode)
+      extends Throwable(s"Country $countryCode is not supported")
+
+  private inline def extractLabelsWithValues[A <: Product](
+      a: A
+  )(using m: Mirror.Of[A], p: Mirror.ProductOf[A]) =
+    val labels = constValueTuple[m.MirroredElemLabels]
+    val values = Tuple.fromProductTyped(a)
+    labels.toList zip values.toList
 
   def apply[F[_]: Async](): F[AddressValidator] =
     for rules <- FieldRules.load[F]
@@ -41,12 +47,16 @@ object AddressValidator:
           addressee: Addressee
       ): Either[UnsupportedCountryError, ValidationResult] =
         rules
-          .get(country)
+          .get(country.toLowerCase)
           .toRight(UnsupportedCountryError(country))
           .map: fieldRules =>
+            extractLabelsWithValues(address)
+            println(fieldRules)
             ???
 
       ???
+
+end AddressValidator
 //          .map(_.validate(address, addressee))
 //          .flatMap(MonadError[F, Throwable].fromEither)
 //          .toValidatedNec

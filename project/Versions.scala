@@ -9,4 +9,5 @@ object Versions {
   val http4s        = "0.23.18"
   val weaver        = "0.8.3"
   val kittens       = "3.0.0"
+  val pureConfig    = "0.17.4"
 }

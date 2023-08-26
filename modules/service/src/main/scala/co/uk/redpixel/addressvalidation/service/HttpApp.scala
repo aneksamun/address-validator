@@ -1,15 +1,19 @@
 package co.uk.redpixel.addressvalidation.service
 
+import cats.effect
 import cats.effect.*
-import com.comcast.ip4s.*
+import co.uk.redpixel.addressvalidation.service.config.AddressValidationServiceConfig
 import org.http4s.ember.server.*
 
-object HttpApp extends IOApp.Simple:
+object HttpApp extends effect.IOApp.Simple:
 
   def run: IO[Unit] =
-    EmberServerBuilder
-      .default[IO]
-      .withPort(port"9000")
-      .withHost(host"localhost")
-      .build
-      .useForever
+    for
+      config <- AddressValidationServiceConfig.load[IO]
+      _ <- EmberServerBuilder
+        .default[IO]
+        .withHost(config.http.host)
+        .withPort(config.http.port)
+        .build
+        .useForever
+    yield ()
