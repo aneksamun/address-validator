@@ -1,15 +1,17 @@
 package co.uk.redpixel.addressvalidator
 
-import cats.data.ValidatedNec
+import cats.data.{Chain, NonEmptyChain, Validated, ValidatedNec}
 import cats.effect.Async
 import cats.syntax.all.*
 import co.uk.redpixel.addressvalidator.Address.CountryCode
-//import cats.syntax.validated.*
 import co.uk.redpixel.addressvalidator.AddressValidator.*
+import co.uk.redpixel.addressvalidator.Rule.MaxLength
+import co.uk.redpixel.addressvalidator.ServiceError.*
 
 import scala.compiletime.constValueTuple
 import scala.deriving.Mirror
 import scala.deriving.Mirror.ProductOf
+import scala.util.matching.Regex
 
 trait AddressValidator:
 
@@ -17,19 +19,11 @@ trait AddressValidator:
       country: CountryCode,
       address: Address,
       addressee: Addressee
-  ): Either[
-    UnsupportedCountryError,
-    ValidationResult
-  ]
+  ): Either[ServiceError, ValidationResult]
 
 object AddressValidator:
 
   type ValidationResult = ValidatedNec[ValidationError, Unit]
-
-  case class ValidationError(field: String, message: String)
-
-  case class UnsupportedCountryError(countryCode: CountryCode)
-      extends Throwable(s"Country $countryCode is not supported")
 
   private inline def extractLabelsWithValues[A <: Product](
       a: A
@@ -38,6 +32,43 @@ object AddressValidator:
     val values = Tuple.fromProductTyped(a)
     labels.toList zip values.toList
 
+  private def assert(predicate: Boolean, error: => ValidationError) =
+    Validated.condNec(predicate, (), error)
+
+  private def validateOptionality(field: String, value: Option[String], required: Boolean) =
+    assert(!required || value.nonEmpty, ValidationError(field, "Field is required"))
+
+  private def validateLength(field: String, value: Option[String], maxLength: MaxLength) =
+    assert(
+      value.forall(_.length < maxLength.value),
+      ValidationError(field, s"Value must be less than $maxLength")
+    )
+
+  private def validateRegex(field: String, value: Option[String], maybePattern: Option[Regex]) =
+    assert(
+      maybePattern.fold(ifEmpty = true): pattern =>
+        value.forall(pattern.matches),
+      ValidationError(field, "Value does not match pattern")
+    )
+
+  private def verify(
+      addressee: Addressee,
+      address: Address,
+      fieldRules: FieldRules
+  ): ValidationResult =
+    NonEmptyChain
+      .fromChainUnsafe(
+        Chain.fromSeq(
+          extractLabelsWithValues(addressee) ++
+            extractLabelsWithValues(address)
+        )
+      )
+      .map: (field, value) =>
+        val rule = fieldRules(field)
+        validateOptionality(field, value, rule.required) *>
+          validateLength(field, value, rule.maxLength) *>
+          validateRegex(field, value, rule.pattern)
+
   def apply[F[_]: Async](): F[AddressValidator] =
     for rules <- FieldRules.load[F]
     yield new AddressValidator:
@@ -45,18 +76,10 @@ object AddressValidator:
           country: CountryCode,
           address: Address,
           addressee: Addressee
-      ): Either[UnsupportedCountryError, ValidationResult] =
+      ): Either[ServiceError, ValidationResult] =
         rules
           .get(country.toLowerCase)
           .toRight(UnsupportedCountryError(country))
-          .map: fieldRules =>
-            extractLabelsWithValues(address)
-            println(fieldRules)
-            ???
-
-      ???
+          .map(verify(addressee, address, _))
 
 end AddressValidator
-//          .map(_.validate(address, addressee))
-//          .flatMap(MonadError[F, Throwable].fromEither)
-//          .toValidatedNec

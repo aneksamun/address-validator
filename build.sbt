@@ -7,7 +7,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 inThisBuild(
   Seq(
-    scalaVersion      := "3.3.0",
+    scalaVersion      := "3.3.1",
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision,
     scalacOptions += "-Wunused:all",
