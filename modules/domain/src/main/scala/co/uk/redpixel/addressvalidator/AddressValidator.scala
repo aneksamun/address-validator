@@ -55,7 +55,7 @@ object AddressValidator:
       addressee: Addressee,
       address: Address,
       fieldRules: FieldRules
-  ): ValidationResult =
+  ): ValidatedNec[ValidationError, Unit] =
     NonEmptyChain
       .fromChainUnsafe(
         Chain.fromSeq(
@@ -68,6 +68,7 @@ object AddressValidator:
         validateOptionality(field, value, rule.required) *>
           validateLength(field, value, rule.maxLength) *>
           validateRegex(field, value, rule.pattern)
+      .sequence_
 
   def apply[F[_]: Async](): F[AddressValidator] =
     for rules <- FieldRules.load[F]
