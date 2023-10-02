@@ -3,28 +3,22 @@ $version: "2.0"
 namespace co.uk.redpixel.addressvalidator.api
 
 use alloy#simpleRestJson
-use co.uk.redpixel.addressvalidator.api#Address
-use co.uk.redpixel.addressvalidator.api#Addressee
-use co.uk.redpixel.addressvalidator.api#CountryCode
+use co.uk.redpixel.addressvalidator.api#AddressContactDetails
 
 @simpleRestJson
-service AddressValidationService {
+service AddressValidationApi {
   version: "v1"
   operations: [Validate]
   errors: []
 }
 
-@http(method: "POST", uri: "/validate-address", code: 200)
+@http(method: "POST", uri: "/validate", code: 200)
 @idempotent
-@documentation("Validates an address")
+@documentation("Validates address")
 operation Validate {
   input := {
     @required
-    country: CountryCode
-    @required
-    addressee: Addressee
-    @required
-    address: Address
+    address: AddressContactDetails
   }
   output := {
     @required

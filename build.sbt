@@ -16,17 +16,6 @@ inThisBuild(
   )
 )
 
-lazy val service = project
-  .in(file("modules/service"))
-  .dependsOn(`smithy-models`, `domain`)
-  .settings(
-    name := "address-validation-service",
-    libraryDependencies ++= smithy4sHttp4sServer(
-      smithy4sVersion.value
-    ) ++ http4sEmberServer ++ cats ++ catsEffect ++ pureConfig,
-    testFrameworks += new TestFramework("weaver.framework.CatsEffect")
-  )
-
 lazy val `smithy-models` = project
   .in(file("modules/smithy-models"))
   .enablePlugins(Smithy4sCodegenPlugin)
@@ -41,6 +30,17 @@ lazy val domain = project
     testFrameworks += new TestFramework("weaver.framework.CatsEffect"),
     libraryDependencies ++=
       circe ++ cats ++ catsEffect ++ fs2 ++ kittens ++ classGraph ++ monixNewTypes ++ weaverTest
+  )
+
+lazy val service = project
+  .in(file("modules/service"))
+  .dependsOn(`smithy-models`, domain)
+  .settings(
+    name := "address-validation-service",
+    libraryDependencies ++= smithy4sHttp4sServer(
+      smithy4sVersion.value
+    ) ++ http4sEmberServer ++ cats ++ catsEffect ++ pureConfig,
+    testFrameworks += new TestFramework("weaver.framework.CatsEffect")
   )
 
 lazy val root =

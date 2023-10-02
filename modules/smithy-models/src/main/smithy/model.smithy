@@ -2,6 +2,12 @@ $version: "2.0"
 
 namespace co.uk.redpixel.addressvalidator.api
 
+@documentation("The addressee first name")
+string FirstName
+
+@documentation("The addressee last name")
+string LastName
+
 @documentation("The address first line")
 string AddressLine1
 
@@ -23,20 +29,10 @@ string Postcode
 @documentation("The address country code")
 string CountryCode
 
-@documentation("The addressee first name")
-string FirstName
-
-@documentation("The addressee last name")
-string LastName
-
-@documentation("The addressee details")
-structure Addressee {
+@documentation("The address contact details")
+structure AddressContactDetails {
   firstName: FirstName
   lastName: LastName
-}
-
-@documentation("The address details")
-structure Address {
   addressLine1: AddressLine1
   addressLine2: AddressLine2
   addressLine3: AddressLine3
