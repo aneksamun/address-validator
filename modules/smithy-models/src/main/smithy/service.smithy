@@ -22,7 +22,7 @@ operation Validate {
   }
   output := {
     @required
-    valid: Boolean
+    isValid: Boolean
     errors: ValidationErrors = []
   }
 }
