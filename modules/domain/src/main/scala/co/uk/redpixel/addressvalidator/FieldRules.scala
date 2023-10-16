@@ -50,13 +50,13 @@ object FieldRules:
     cursor
       .get[Vector[Json]]("fields")
       .flatMap(
-        _.traverse { json =>
+        _.traverse: json =>
           val cursor = json.hcursor
           for
             name  <- cursor.get[FieldName]("name")
             rules <- cursor.get[Rule]("rules")
           yield (name, rules)
-        }.map(_.toMap)
+        .map(_.toMap)
       )
 
   extension (underlying: ClassgraphResource)

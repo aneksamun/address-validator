@@ -1,4 +1,5 @@
 import sbt.Keys.libraryDependencies
+import sbtwelcome.UsefulTask
 import smithy4s.codegen.Smithy4sCodegenPlugin
 
 import Dependencies.*
@@ -51,3 +52,43 @@ lazy val root =
       `smithy-models`,
       service
     )
+    .settings(
+      welcomeSettings,
+      semanticdbEnabled := true,
+      semanticdbVersion := scalafixSemanticdb.revision,
+      addCommandAlias(
+        "validate",
+        List(
+          "clean",
+          "scalafmtCheckAll",
+          "scalafmtSbtCheck",
+          "compile",
+          "Test/compile",
+          "scalafixAll --check",
+          "undeclaredCompileDependenciesTest",
+          "unusedCompileDependenciesTest",
+          "Test/test"
+        ).mkString(";", "; ", "")
+      ),
+      addCommandAlias("scalafmtFormatAll", "; scalafmtAll ; scalafmtSbt"),
+      addCommandAlias("validateFormatting", "; scalafmtCheckAll; scalafmtSbtCheck")
+    )
+
+lazy val welcomeSettings = Seq(
+  logo :=
+    s"""
+       |┏┓ ┓ ┓        ┓┏  ┓• ┓
+       |┣┫┏┫┏┫┏┓┏┓┏┏  ┃┃┏┓┃┓┏┫┏┓╋┏┓┏┓
+       |┛┗┗┻┗┻┛ ┗ ┛┛  ┗┛┗┻┗┗┗┻┗┻┗┗┛┛
+       |
+       |${scala.Console.CYAN}v${version.value}${scala.Console.RESET}
+       |
+       |${scala.Console.YELLOW}Scala ${scalaVersion.value}${scala.Console.RESET}
+       |
+       |""".stripMargin,
+  usefulTasks := List(
+    UsefulTask("scalafmtFormatAll", "Format all files"),
+    UsefulTask("validateFormatting", "Validate format for all files"),
+    UsefulTask("validate", "Validate build as in CI")
+  )
+)

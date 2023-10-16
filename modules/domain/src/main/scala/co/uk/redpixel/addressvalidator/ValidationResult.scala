@@ -8,7 +8,7 @@ object ValidationResult:
 
   val valid: ValidationResult = Validated.validNec(())
 
-  def invalid(error: ValidationError): ValidationResult = 
+  def invalid(error: ValidationError): ValidationResult =
     Validated.invalidNec(error)
 
   def cond(predicate: Boolean, ifFalse: => ValidationError): ValidationResult =

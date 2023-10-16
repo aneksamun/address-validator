@@ -46,10 +46,11 @@ object Rule:
 
   given Decoder[Regex] = Decoder.decodeString.map(_.r)
 
-  given Decoder[Rule] = (cursor: HCursor) => (
-    cursor.downField("maxLength").get[MaxLength]("value"),
-    cursor.downField("required").getOrElse[Boolean]("value")(fallback = false),
-    cursor.downField("pattern").get[Option[Regex]]("value")
-  ).mapN(Rule.apply)
+  given Decoder[Rule] = (cursor: HCursor) =>
+    (
+      cursor.downField("maxLength").get[MaxLength]("value"),
+      cursor.downField("required").getOrElse[Boolean]("value")(fallback = false),
+      cursor.downField("pattern").get[Option[Regex]]("value")
+    ).mapN(Rule.apply)
 
 end Rule

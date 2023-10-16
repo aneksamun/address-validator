@@ -28,7 +28,6 @@ object Dependencies {
 
   lazy val pureConfig = Seq(
     "com.github.pureconfig" %% "pureconfig-core" % Versions.pureConfig
-
   )
 
   lazy val classGraph = Seq(
