@@ -12,9 +12,7 @@ import scala.deriving.Mirror.ProductOf
 import scala.util.matching.Regex
 
 trait AddressValidator:
-  def validate(
-      addressContactInfo: AddressContactInfo
-  ): ValidationResult
+  def validate(info: AddressContactInfo): ValidationResult
 
 object AddressValidator:
 
